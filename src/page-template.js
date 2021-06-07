@@ -1,4 +1,4 @@
-const generatePage = (name, github) => {
+module.exports = (name, github) => {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -18,6 +18,3 @@ const generatePage = (name, github) => {
 };
 
 
-//module.export at the bottom makes the src file that has the function
-//we want to make available to other files---function here being generatePage
-module.exports = generatePage;
