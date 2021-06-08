@@ -4,7 +4,7 @@ const fs = require('fs');
 //must use with other pages module to link them together
 const generatePage = require('./src/page-template.js');
 
-//array that holds the user command-line argument
+//array that holds the user command-line argument....the 2 is calling the 3rd argument- in the fs file?
 const profileDataArgs = process.argv.slice(2);
 console.log(profileDataArgs);
 
@@ -19,7 +19,7 @@ const pageHTML = generatePage(name, github);
 //console log
 /* the arrow function only needs parenthesis if there is more than 1 argument*/
 fs.writeFile('./index.html', pageHTML, err => {
-  if (err) throw new Error(err);
+  if (err) throw err;
 
   console.log('Portfolio complete, Check out index.html to see the output!');
 })
