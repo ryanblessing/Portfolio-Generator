@@ -1,16 +1,72 @@
 //Try to group by source: npm packages, personal modules, and core library modules often get grouped together.
 const inquirer = require('inquirer');
+const Choice = require('inquirer/lib/objects/choice');
 // always use a console.log here to make sure inquirer was actually downloaded-9.3.5
-inquirer
-.prompt([
-  {
-    type: 'input',
-    name: 'name',
-    message: 'What is your name?'
-  }
-])
-.then((answers) => 
-  console.log(answers));
+const promptUser = () => {
+  return inquirer.prompt([{
+      type: 'input',
+      name: 'name',
+      message: 'What is your name?'
+    },
+    {
+      type: 'input',
+      name: 'github',
+      message: 'Enter your Github Username'
+    },
+    {
+      type: 'input',
+      name: 'about',
+      message: 'Provide some Information about yourself:'
+    }
+  ]);
+
+};
+promptUser().then(answers => console.log(answers));
+
+const promptProject = () => {
+  console.log(`
+  ==================
+  add a new project
+  ==================
+  `);
+  return inquirer.prompt([
+    {
+      type: 'input',
+      name: 'name',
+      message: 'What is the name of your project?'
+
+    },
+    {
+      type: 'input',
+      name: 'description',
+      message: 'Provide a description of the project (Required)'
+    },
+    {
+      type: 'checkbox',
+      name: 'language',
+      message: 'What did you build this project with? (Check all that apply!)',
+      choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'BOOTSTRAP', 'NODE']
+    },
+    {
+      type: 'input',
+      name: 'link',
+      message: 'Enter the Github link to your project (Required)'
+    },
+    {
+      type: 'confirm',
+      name: 'feature',
+      message: 'Would you like to feature this Project?',
+      default: false
+    },
+    {
+      type: 'confirm',
+      name: 'confirmAddProject',
+      message: 'Would you like to Enter another Project?',
+      default: false
+    }
+  ]);
+};
+
 //must use at top to use the fs file module
 //const fs = require('fs');
 //must use with other pages module to link them together
@@ -34,5 +90,5 @@ inquirer
 //fs.writeFile('./index.html', pageHTML, err => {
 //  if (err) throw err;
 
-  //console.log('Portfolio complete, Check out index.html to see the output!');
+//console.log('Portfolio complete, Check out index.html to see the output!');
 //});
