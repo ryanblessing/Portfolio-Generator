@@ -14,7 +14,5 @@ module.exports = (name, github) => {
       <h2><a href="https://github.com/${github}">Github</a></h2>
     </body>
     </html>
-     `;
+     `
 };
-
-

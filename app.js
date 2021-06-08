@@ -19,7 +19,7 @@ const pageHTML = generatePage(name, github);
 //console log
 /* the arrow function only needs parenthesis if there is more than 1 argument*/
 fs.writeFile('./index.html', pageHTML, err => {
-  if(err) throw new Error(err);
+  if (err) throw new Error(err);
 
   console.log('Portfolio complete, Check out index.html to see the output!');
 });
