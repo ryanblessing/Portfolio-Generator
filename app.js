@@ -1,6 +1,6 @@
 //Try to group by source: npm packages, personal modules, and core library modules often get grouped together.
 const inquirer = require('inquirer');
-const Choice = require('inquirer/lib/objects/choice');
+const choice = require('inquirer/lib/objects/choice');
 // always use a console.log here to make sure inquirer was actually downloaded-9.3.5
 const promptUser = () => {
   return inquirer.prompt([{
@@ -21,15 +21,22 @@ const promptUser = () => {
   ]);
 
 };
-promptUser().then(answers => console.log(answers));
 
-const promptProject = () => {
+const promptProject = portfolioData => {
   console.log(`
   ==================
   add a new project
   ==================
   `);
-  return inquirer.prompt([
+  //added the projects array to portfolioData as empty to set future projects 
+  //---portfolioData.projects=[];
+  //if theres no "projects" array property, then create one
+  //----what does the ! mean in this process!!!!
+  if(!portfolioData.projects) {
+    portfolioData.projects = [];
+  }
+  return inquirer
+  .prompt([
     {
       type: 'input',
       name: 'name',
@@ -64,8 +71,28 @@ const promptProject = () => {
       message: 'Would you like to Enter another Project?',
       default: false
     }
+    // this is the callback function from projectPrompt-.push is a array used to place
+    //the projectData from inquirer into the new projects array 
+    .then(projectData => {
+      portfolioData.projects.push(projectData);
+      //the if statement evaluates the user response to add more projects
+      //response captured in the answer object for projectData, in property of confirmAddProject.
+      //the confirmAddProjects elvaluated weather true or false. If true then call promptProject(portfolioData) function
+      if(projectData.confirmAddProject) {
+        return promptProject(portfolioData);
+        //if user decides to not add more projects then False, triggers the return statement
+      } else {
+        return portfolioData;
+      }
+    })
   ]);
 };
+promptUser()
+  .then(promptProject)
+  .then(portfolioData => {
+    console.log(portfolioData);
+  });
+
 
 //must use at top to use the fs file module
 //const fs = require('fs');
