@@ -1,25 +1,59 @@
 //Try to group by source: npm packages, personal modules, and core library modules often get grouped together.
+const fs = require('fs');
 const inquirer = require('inquirer');
-const choice = require('inquirer/lib/objects/choice');
+const generatePage = require('./src/page-template.js');
+
 // always use a console.log here to make sure inquirer was actually downloaded-9.3.5
 const promptUser = () => {
-  return inquirer.prompt([{
+  return inquirer.prompt([
+    {
       type: 'input',
       name: 'name',
-      message: 'What is your name?'
+      message: 'What is your name? (Required)',
+      //validate receives arg(nameInput) followed but boolean of true of false
+      validate: nameInput => {
+        if(nameInput) {
+          return true;
+        } else {
+          console.log('Please enter your name!');
+          return false;
+        }
+      }
     },
     {
       type: 'input',
       name: 'github',
-      message: 'Enter your Github Username'
+      message: 'Enter your Github Username (Required)',
+      validate: gitHubName => {
+        if(gitHubName) {
+          return true;
+        } else {
+          console.log('Please enter your GitHub Username!');
+          return false;
+        }
+      }
     },
     {
-      type: 'input',
-      name: 'about',
-      message: 'Provide some Information about yourself:'
+      type: 'confirm',
+      name: 'confirmAbout',
+      message: 'Would you like to enter some information about yourself for an "About" section?',
+      default:true
+    },
+    {
+      type:'input',
+      name:'about',
+      message:'Provide some information about yourself:',
+
+      // arrow function written like when:({ confirmAbout }) => confirmAbout
+      when: ({confirmAbout}) => {
+        if(confirmAbout) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   ]);
-
 };
 
 const promptProject = portfolioData => {
@@ -40,13 +74,28 @@ const promptProject = portfolioData => {
     {
       type: 'input',
       name: 'name',
-      message: 'What is the name of your project?'
-
+      message: 'What is the name of your project? (Required)',
+      validate: projectName => {
+        if(projectName) {
+          return true;
+        } else {
+          console.log('Please enter your projects name!');
+          return false;
+        }
+      }
     },
     {
       type: 'input',
       name: 'description',
-      message: 'Provide a description of the project (Required)'
+      message: 'Provide a description of the project (Required)',
+      validate: descriptionBlock => {
+        if(descriptionBlock) {
+          return true;
+        } else {
+          console.log('Please enter a description of your project!');
+          return false;
+        }
+      }
     },
     {
       type: 'checkbox',
@@ -57,7 +106,15 @@ const promptProject = portfolioData => {
     {
       type: 'input',
       name: 'link',
-      message: 'Enter the Github link to your project (Required)'
+      message: 'Enter the Github link to your project (Required)',
+      validate: gitHubLink => {
+        if(gitHubLink) {
+          return true;
+        } else {
+          console.log('Please enter your GitHub Link!');
+          return false;
+        }
+      }
     },
     {
       type: 'confirm',
@@ -71,6 +128,7 @@ const promptProject = portfolioData => {
       message: 'Would you like to Enter another Project?',
       default: false
     }
+  ])
     // this is the callback function from projectPrompt-.push is a array used to place
     //the projectData from inquirer into the new projects array 
     .then(projectData => {
@@ -84,8 +142,7 @@ const promptProject = portfolioData => {
       } else {
         return portfolioData;
       }
-    })
-  ]);
+    });
 };
 promptUser()
   .then(promptProject)
@@ -93,10 +150,6 @@ promptUser()
     console.log(portfolioData);
   });
 
-
-//must use at top to use the fs file module
-//const fs = require('fs');
-//must use with other pages module to link them together
 //const generatePage = require('./src/page-template.js');
 
 //array that holds the user command-line argument....the 2 is calling the 3rd argument- in the fs file?
