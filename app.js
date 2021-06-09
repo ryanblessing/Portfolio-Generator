@@ -135,7 +135,7 @@ const promptProject = portfolioData => {
       portfolioData.projects.push(projectData);
       //the if statement evaluates the user response to add more projects
       //response captured in the answer object for projectData, in property of confirmAddProject.
-      //the confirmAddProjects elvaluated weather true or false. If true then call promptProject(portfolioData) function
+      //the confirmAddProjects evaluated weather true or false. If true then call promptProject(portfolioData) function
       if(projectData.confirmAddProject) {
         return promptProject(portfolioData);
         //if user decides to not add more projects then False, triggers the return statement
@@ -147,7 +147,13 @@ const promptProject = portfolioData => {
 promptUser()
   .then(promptProject)
   .then(portfolioData => {
-    console.log(portfolioData);
+    const pageHTML = generatePage(portfolioData);
+
+    fs.writeFile('./index.html', pageHTML, err => {
+      if (err) throw err;
+
+     console.log('Page created! Check out index.html in this directory to see it!');
+     });
   });
 
 //const generatePage = require('./src/page-template.js');
@@ -168,7 +174,7 @@ promptUser()
 //console log
 /* the arrow function only needs parenthesis if there is more than 1 argument*/
 //fs.writeFile('./index.html', pageHTML, err => {
-//  if (err) throw err;
+ //if (err) throw err;
 
 //console.log('Portfolio complete, Check out index.html to see the output!');
 //});
